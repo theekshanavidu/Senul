@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,15 +35,28 @@ h1 {color:#333; margin-bottom:10px;}
 }
 .flipped {background:#4CAF50; color:white; transform:rotateY(0deg);}
 .admin-panel {display:none; flex-direction:column; align-items:center; background:#f9f9f9; padding:20px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); margin-top:20px;}
-input, button {padding:10px; border:none; border-radius:5px; margin:5px;}
-input {width:200px;}
-button {background-color:#4CAF50; color:white; cursor:pointer;}
+input {padding:10px; border:none; border-radius:5px; margin:5px; width:200px;}
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:5px;
+  margin:5px;
+  background: linear-gradient(90deg,#4CAF50 50%, #2e7d32 50%);
+  background-size:200% 100%;
+  color:white;
+  cursor:pointer;
+  transition: all 0.4s ease;
+  font-weight:bold;
+}
+button:hover {
+  background-position: right center;
+}
 #login-section {display:flex; flex-direction:column; align-items:center; margin-top:20px;}
 #footer {margin-top:30px; color:gray;}
 </style>
 </head>
 <body>
-<h1>🎲 Senul Seettu Random Number 🎲</h1>
+<h1>🎰 Senul Seettu Random Number 🎯</h1>
 
 <div id="name-section">
 <input type="text" id="username" placeholder="Enter Your Full Name" />
@@ -79,6 +93,10 @@ button {background-color:#4CAF50; color:white; cursor:pointer;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<!-- Sounds -->
+<audio id="cardClickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3"></audio>
+<audio id="numberRevealSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-notification-2018.mp3"></audio>
+
 <script>
 // Firebase configuration
 const firebaseConfig = {
@@ -104,6 +122,8 @@ const usernameInput = document.getElementById("username");
 const cardsContainer = document.getElementById("cards");
 const adminPanel = document.getElementById("adminPanel");
 const results = document.getElementById("results");
+const cardClickSound = document.getElementById("cardClickSound");
+const numberRevealSound = document.getElementById("numberRevealSound");
 
 // Load totalPlayers and assigned numbers with live updates
 db.ref("totalPlayers").on("value", snapshot => {
@@ -151,6 +171,10 @@ function generateCards(username){
       updateAvailableNumbers();
       if(availableNumbers.length===0) return alert("Numbers exhausted!");
 
+      // Play card click sound
+      cardClickSound.currentTime = 0;
+      cardClickSound.play();
+
       let playerObj = assigned.find(a=>a.name===username && a.adminAssigned);
       let number;
       if(playerObj){
@@ -169,6 +193,11 @@ function generateCards(username){
 
       card.classList.add("flipped");
       card.innerText = number;
+
+      // Play number reveal sound
+      numberRevealSound.currentTime = 0;
+      numberRevealSound.play();
+
       alert(`${username} got number ${number}!`);
     };
 
@@ -200,10 +229,7 @@ document.getElementById("setPlayersBtn").onclick = () => {
   const val = parseInt(document.getElementById("totalPlayers").value);
   if(val < 2) return alert("Minimum 2 players required!");
   totalPlayers = val;
-  db.ref("totalPlayers").set(totalPlayers).then(()=>{
-    updateAvailableNumbers();
-    alert(`Total players set to ${totalPlayers}. Cards = ${totalPlayers-1}`);
-  });
+  db.ref("totalPlayers").set(totalPlayers).then(()=>{ updateAvailableNumbers(); alert(`Total players set to ${totalPlayers}. Cards = ${totalPlayers-1}`); });
 };
 
 // Admin manual assign
