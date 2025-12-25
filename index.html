@@ -113,7 +113,7 @@ db.ref("totalPlayers").once("value").then(snapshot=>{
   updateAvailableNumbers();
 });
 
-// Load data from Firebase
+// Load assigned numbers
 function loadData(){
   db.ref("assigned").once("value").then(snapshot=>{
     assigned = snapshot.val() || [];
@@ -126,7 +126,7 @@ function loadData(){
 function updateAvailableNumbers(){
   allNumbers = [];
   for(let i=2;i<=totalPlayers;i++) allNumbers.push(i);
-  availableNumbers = allNumbers.filter(n => !assigned.find(a=>a.number===n));
+  availableNumbers = allNumbers.filter(n => !assigned.find(a=>a.number===n && !a.adminAssigned));
 }
 
 // Display admin results
@@ -138,25 +138,23 @@ function displayResults(){
   }
 }
 
-// Start button click
-startBtn.onclick = ()=>{
-  const username = usernameInput.value.trim();
-  if(!username) return alert("Please enter your full name!");
-  document.getElementById("name-section").style.display="none";
-  cardsContainer.style.display="flex";
-  cardsContainer.innerHTML="";
-
+// Generate cards dynamically
+function generateCards(username){
   updateAvailableNumbers();
-  for(let i=0; i<totalPlayers-1; i++){
+  cardsContainer.innerHTML = "";
+  const cardsToGenerate = totalPlayers - 1;
+
+  for(let i=0; i<cardsToGenerate; i++){
     const card = document.createElement("div");
-    card.className="card";
-    card.innerText="❓";
-    card.onclick=()=>{
+    card.className = "card";
+    card.innerText = "❓";
+
+    card.onclick = ()=>{
       if(card.classList.contains("flipped")) return;
       updateAvailableNumbers();
       if(availableNumbers.length===0) return alert("Numbers exhausted!");
-      
-      // Check if player has adminAssigned number
+
+      // Check if player has admin-assigned number
       let playerObj = assigned.find(a=>a.name===username && a.adminAssigned);
       let number;
       if(playerObj){
@@ -169,16 +167,26 @@ startBtn.onclick = ()=>{
       availableNumbers = availableNumbers.filter(n => n!==number);
 
       if(!assigned.find(a=>a.name===username)){
-        assigned.push({name:username,number:number,adminAssigned:!!playerObj});
+        assigned.push({name:username, number:number, adminAssigned:!!playerObj});
         db.ref("assigned").set(assigned);
       }
 
       card.classList.add("flipped");
-      card.innerText=number;
+      card.innerText = number;
       alert(`${username} got number ${number}!`);
     };
+
     cardsContainer.appendChild(card);
   }
+}
+
+// Start button click
+startBtn.onclick = ()=>{
+  const username = usernameInput.value.trim();
+  if(!username) return alert("Please enter your full name!");
+  document.getElementById("name-section").style.display="none";
+  cardsContainer.style.display="flex";
+  generateCards(username);
 };
 
 // Admin login
@@ -207,7 +215,7 @@ document.getElementById("assignBtn").onclick=()=>{
   const num = parseInt(document.getElementById("manualNumber").value);
   if(!name || !num) return alert("Name and Number required!");
   if(num<2 || num>totalPlayers) return alert(`Number must be between 2 and ${totalPlayers}`);
-  
+
   assigned = assigned.filter(a=>a.name!==name);
   assigned.push({name:name, number:num, adminAssigned:true});
   db.ref("assigned").set(assigned);
@@ -219,7 +227,7 @@ document.getElementById("assignBtn").onclick=()=>{
 document.getElementById("resetBtn").onclick=()=>{
   if(confirm("Are you sure you want to reset all?")){
     db.ref("assigned").set([]);
-    db.ref("totalPlayers").set(10); // reset default players
+    db.ref("totalPlayers").set(10);
     location.reload();
   }
 };
@@ -235,10 +243,16 @@ document.getElementById("exportBtn").onclick=()=>{
 };
 
 // Listen for live updates
-db.ref("assigned").on("value",snapshot=>{
+db.ref("assigned").on("value", snapshot=>{
   assigned = snapshot.val() || [];
   updateAvailableNumbers();
   if(adminPanel.style.display==="flex") displayResults();
+});
+db.ref("totalPlayers").on("value", snapshot=>{
+  const val = snapshot.val();
+  if(val) totalPlayers = val;
+  document.getElementById("totalPlayers").value = totalPlayers;
+  updateAvailableNumbers();
 });
 </script>
 </body>
