@@ -105,22 +105,20 @@ const cardsContainer = document.getElementById("cards");
 const adminPanel = document.getElementById("adminPanel");
 const results = document.getElementById("results");
 
-// Load totalPlayers from DB
-db.ref("totalPlayers").once("value").then(snapshot=>{
+// Load totalPlayers and assigned numbers with live updates
+db.ref("totalPlayers").on("value", snapshot => {
   const val = snapshot.val();
-  if(val) totalPlayers = val;
-  document.getElementById("totalPlayers").value = totalPlayers;
-  updateAvailableNumbers();
-});
-
-// Load assigned numbers
-function loadData(){
-  db.ref("assigned").once("value").then(snapshot=>{
-    assigned = snapshot.val() || [];
+  if(val) {
+    totalPlayers = val;
+    document.getElementById("totalPlayers").value = totalPlayers;
     updateAvailableNumbers();
-    if(adminPanel.style.display==="flex") displayResults();
-  });
-}
+  }
+});
+db.ref("assigned").on("value", snapshot => {
+  assigned = snapshot.val() || [];
+  updateAvailableNumbers();
+  if(adminPanel.style.display==="flex") displayResults();
+});
 
 // Update available numbers
 function updateAvailableNumbers(){
@@ -143,7 +141,6 @@ function generateCards(username){
   updateAvailableNumbers();
   cardsContainer.innerHTML = "";
   const cardsToGenerate = totalPlayers - 1;
-
   for(let i=0; i<cardsToGenerate; i++){
     const card = document.createElement("div");
     card.className = "card";
@@ -154,7 +151,6 @@ function generateCards(username){
       updateAvailableNumbers();
       if(availableNumbers.length===0) return alert("Numbers exhausted!");
 
-      // Check if player has admin-assigned number
       let playerObj = assigned.find(a=>a.name===username && a.adminAssigned);
       let number;
       if(playerObj){
@@ -180,7 +176,7 @@ function generateCards(username){
   }
 }
 
-// Start button click
+// Start button
 startBtn.onclick = ()=>{
   const username = usernameInput.value.trim();
   if(!username) return alert("Please enter your full name!");
@@ -192,21 +188,22 @@ startBtn.onclick = ()=>{
 // Admin login
 document.getElementById("loginBtn").onclick=()=>{
   const pass = document.getElementById("adminPass").value;
-  if(pass==="Senul123"){
+  if(pass==="pacaya123"){
     document.getElementById("login-section").style.display="none";
     adminPanel.style.display="flex";
-    loadData();
+    displayResults();
   } else alert("Wrong Password!");
 };
 
 // Set total players
-document.getElementById("setPlayersBtn").onclick=()=>{
+document.getElementById("setPlayersBtn").onclick = () => {
   const val = parseInt(document.getElementById("totalPlayers").value);
-  if(val<2) return alert("Minimum 2 players required!");
+  if(val < 2) return alert("Minimum 2 players required!");
   totalPlayers = val;
-  db.ref("totalPlayers").set(totalPlayers); // save in Firebase
-  updateAvailableNumbers();
-  alert(`Total players set to ${totalPlayers}. Cards will be ${totalPlayers-1}.`);
+  db.ref("totalPlayers").set(totalPlayers).then(()=>{
+    updateAvailableNumbers();
+    alert(`Total players set to ${totalPlayers}. Cards = ${totalPlayers-1}`);
+  });
 };
 
 // Admin manual assign
@@ -232,7 +229,7 @@ document.getElementById("resetBtn").onclick=()=>{
   }
 };
 
-// Export as PNG
+// Export PNG
 document.getElementById("exportBtn").onclick=()=>{
   html2canvas(results).then(canvas=>{
     const link = document.createElement("a");
@@ -241,19 +238,6 @@ document.getElementById("exportBtn").onclick=()=>{
     link.click();
   });
 };
-
-// Listen for live updates
-db.ref("assigned").on("value", snapshot=>{
-  assigned = snapshot.val() || [];
-  updateAvailableNumbers();
-  if(adminPanel.style.display==="flex") displayResults();
-});
-db.ref("totalPlayers").on("value", snapshot=>{
-  const val = snapshot.val();
-  if(val) totalPlayers = val;
-  document.getElementById("totalPlayers").value = totalPlayers;
-  updateAvailableNumbers();
-});
 </script>
 </body>
 </html>
