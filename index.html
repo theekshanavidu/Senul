@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="https://img.freepik.com/free-photo/billie-dollar-money-background_1150-744.jpg">
 <title>Senul Seettu Random Number</title>
+
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -22,21 +22,60 @@ body {
 body::before {
   content: "";
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
+  inset: 0;
   background: rgba(255,255,255,0.7);
-  z-index:0;
+  z-index: 0;
 }
-* {position: relative; z-index:1;}
-h1 {color:#333; margin-bottom:10px;}
-.card-container {display:flex; flex-wrap:wrap; justify-content:center; max-width:700px; margin-top:20px;}
+* { position: relative; z-index: 1; }
+h1 { color:#333; }
+
+.card-container {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  max-width:700px;
+  margin-top:20px;
+}
+
 .card {
-  width:100px; height:140px; background:#fff; border-radius:10px; margin:10px;
-  display:flex; align-items:center; justify-content:center; font-size:30px; cursor:pointer; transition: transform 0.5s, background 0.5s;
+  width:100px;
+  height:140px;
+  background:#fff;
+  border-radius:10px;
+  margin:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  cursor:pointer;
+  transition: transform 0.5s, background 0.5s;
   box-shadow:0 4px 8px rgba(0,0,0,0.2);
 }
-.flipped {background:#4CAF50; color:white; transform:rotateY(0deg);}
-.admin-panel {display:none; flex-direction:column; align-items:center; background:#f9f9f9; padding:20px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); margin-top:20px;}
-input {padding:10px; border:none; border-radius:5px; margin:5px; width:200px;}
+
+.flipped {
+  background:#4CAF50;
+  color:white;
+}
+
+.admin-panel {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  background:#f9f9f9;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.2);
+  margin-top:20px;
+}
+
+input {
+  padding:10px;
+  border:none;
+  border-radius:5px;
+  margin:5px;
+  width:200px;
+}
+
 button {
   padding:10px 20px;
   border:none;
@@ -49,223 +88,196 @@ button {
   transition: all 0.4s ease;
   font-weight:bold;
 }
+
 button:hover {
   background-position: right center;
 }
-#login-section {display:flex; flex-direction:column; align-items:center; margin-top:20px;}
-#footer {margin-top:30px; color:gray;}
+
+#footer { margin-top:30px; color:gray; }
 </style>
 </head>
+
 <body>
+
 <h1>🎰 Senul Seettu Random Number 🎯</h1>
 
 <div id="name-section">
-<input type="text" id="username" placeholder="Enter Your Full Name" />
-<button id="startBtn">Start</button>
+  <input type="text" id="username" placeholder="Enter Your Full Name">
+  <button id="startBtn">Start</button>
 </div>
 
 <div class="card-container" id="cards" style="display:none;"></div>
 
 <div id="login-section">
-<input type="password" id="adminPass" placeholder="Admin Password" />
-<button id="loginBtn">Admin Login</button>
+  <input type="password" id="adminPass" placeholder="Admin Password">
+  <button id="loginBtn">Admin Login</button>
 </div>
 
 <div class="admin-panel" id="adminPanel">
-<h2>🧑‍💼 Admin Panel</h2>
-<label>Total Players: <input type="number" id="totalPlayers" min="2" value="10"></label>
-<button id="setPlayersBtn">Set Players</button>
+  <h2>🧑‍💼 Admin Panel</h2>
 
-<h3>Assign Number Manually</h3>
-<input type="text" id="manualName" placeholder="Player Name">
-<input type="number" id="manualNumber" placeholder="Number">
-<button id="assignBtn">Assign</button>
+  <label>Total Players:
+    <input type="number" id="totalPlayers" min="2" value="10">
+  </label>
+  <button id="setPlayersBtn">Set Players</button>
 
-<h3>Assigned Numbers</h3>
-<div id="results"></div>
-<button id="resetBtn">🔄 Reset All</button>
-<button id="exportBtn">📥 Export as PNG</button>
+  <h3>Assign Number Manually</h3>
+  <input type="text" id="manualName" placeholder="Player Name">
+  <input type="number" id="manualNumber" placeholder="Number">
+  <button id="assignBtn">Assign</button>
+
+  <h3>Assigned Numbers</h3>
+  <div id="results"></div>
+
+  <button id="resetBtn">🔄 Reset All</button>
+  <button id="exportBtn">📥 Export as PNG</button>
 </div>
 
 <div id="footer">© Theekshana Viduranga</div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<!-- Sounds -->
 <audio id="cardClickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3"></audio>
 <audio id="numberRevealSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-notification-2018.mp3"></audio>
 
 <script>
-// Firebase configuration
-const firebaseConfig = {
+// Firebase config
+firebase.initializeApp({
   apiKey: "AIzaSyACPs6N80C3i8SS3aG7ahybThWvsPSf19o",
   authDomain: "senul-80301.firebaseapp.com",
   databaseURL: "https://senul-80301-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "senul-80301",
   storageBucket: "senul-80301.appspot.com",
   messagingSenderId: "718343352275",
-  appId: "1:718343352275:web:7c0e22dd69981690df8926",
-  measurementId: "G-KFYWFF619M"
-};
-firebase.initializeApp(firebaseConfig);
+  appId: "1:718343352275:web:7c0e22dd69981690df8926"
+});
+
 const db = firebase.database();
 
 let totalPlayers = 10;
-let allNumbers = [];
-let availableNumbers = [];
 let assigned = [];
+let availableNumbers = [];
 
-const startBtn = document.getElementById("startBtn");
-const usernameInput = document.getElementById("username");
 const cardsContainer = document.getElementById("cards");
-const adminPanel = document.getElementById("adminPanel");
 const results = document.getElementById("results");
-const cardClickSound = document.getElementById("cardClickSound");
-const numberRevealSound = document.getElementById("numberRevealSound");
 
-// Load totalPlayers and assigned numbers with live updates
-db.ref("totalPlayers").on("value", snapshot => {
-  const val = snapshot.val();
-  if(val) {
-    totalPlayers = val;
-    document.getElementById("totalPlayers").value = totalPlayers;
-    updateAvailableNumbers();
-  }
+db.ref("totalPlayers").on("value", s => {
+  if (s.val()) totalPlayers = s.val();
 });
-db.ref("assigned").on("value", snapshot => {
-  assigned = snapshot.val() || [];
+
+db.ref("assigned").on("value", s => {
+  assigned = s.val() || [];
   updateAvailableNumbers();
-  if(adminPanel.style.display==="flex") displayResults();
+  displayResults();
 });
 
-// Update available numbers
 function updateAvailableNumbers(){
-  allNumbers = [];
-  for(let i=2;i<=totalPlayers;i++) allNumbers.push(i);
-  availableNumbers = allNumbers.filter(n => !assigned.find(a=>a.number===n && !a.adminAssigned));
-}
-
-// Display admin results
-function displayResults(){
-  if(assigned.length===0){
-    results.innerHTML="<p>No numbers assigned yet.</p>";
-  }else{
-    results.innerHTML = assigned.map(d=>`<p>${d.name} → ${d.number}</p>`).join("");
+  availableNumbers = [];
+  for(let i=2;i<=totalPlayers;i++){
+    if(!assigned.find(a => a.number === i)){
+      availableNumbers.push(i);
+    }
   }
 }
 
-// Generate cards dynamically
+function displayResults(){
+  results.innerHTML = assigned.length
+    ? assigned.map(a => `<p>${a.name} → ${a.number}</p>`).join("")
+    : "<p>No numbers assigned</p>";
+}
+
 function generateCards(username){
-  updateAvailableNumbers();
   cardsContainer.innerHTML = "";
-  const cardsToGenerate = totalPlayers - 1;
-  for(let i=0; i<cardsToGenerate; i++){
+  for(let i=0;i<totalPlayers-1;i++){
     const card = document.createElement("div");
     card.className = "card";
     card.innerText = "❓";
 
-    card.onclick = ()=>{
-      if(card.classList.contains("flipped")) return;
-      updateAvailableNumbers();
-      if(availableNumbers.length===0) return alert("Numbers exhausted!");
+    card.onclick = () => {
 
-      // Play card click sound
-      cardClickSound.currentTime = 0;
-      cardClickSound.play();
-
-      let playerObj = assigned.find(a=>a.name===username && a.adminAssigned);
-      let number;
-      if(playerObj){
-        number = playerObj.number;
-      } else {
-        const randomIndex = Math.floor(Math.random()*availableNumbers.length);
-        number = availableNumbers[randomIndex];
+      if(assigned.find(a => a.name === username)){
+        return alert("You already received a number!");
       }
 
-      availableNumbers = availableNumbers.filter(n => n!==number);
-
-      if(!assigned.find(a=>a.name===username)){
-        assigned.push({name:username, number:number, adminAssigned:!!playerObj});
-        db.ref("assigned").set(assigned);
+      if(availableNumbers.length === 0){
+        return alert("No numbers available!");
       }
+
+      document.getElementById("cardClickSound").play();
+
+      const num = availableNumbers[Math.floor(Math.random()*availableNumbers.length)];
+      assigned.push({ name: username, number: num, adminAssigned:false });
+      db.ref("assigned").set(assigned);
 
       card.classList.add("flipped");
-      card.innerText = number;
+      card.innerText = num;
+      document.getElementById("numberRevealSound").play();
 
-      // Play number reveal sound
-      numberRevealSound.currentTime = 0;
-      numberRevealSound.play();
-
-      alert(`${username} got number ${number}!`);
+      alert(`${username} got number ${num}`);
     };
 
     cardsContainer.appendChild(card);
   }
 }
 
-// Start button
-startBtn.onclick = ()=>{
-  const username = usernameInput.value.trim();
-  if(!username) return alert("Please enter your full name!");
+document.getElementById("startBtn").onclick = () => {
+  const name = username.value.trim();
+  if(!name) return alert("Enter your name!");
   document.getElementById("name-section").style.display="none";
   cardsContainer.style.display="flex";
-  generateCards(username);
+  generateCards(name);
 };
 
-// Admin login
-document.getElementById("loginBtn").onclick=()=>{
-  const pass = document.getElementById("adminPass").value;
-  if(pass==="pacaya123"){
+document.getElementById("loginBtn").onclick = () => {
+  if(adminPass.value === "pacaya123"){
     document.getElementById("login-section").style.display="none";
     adminPanel.style.display="flex";
-    displayResults();
-  } else alert("Wrong Password!");
+  } else alert("Wrong password!");
 };
 
-// Set total players
 document.getElementById("setPlayersBtn").onclick = () => {
-  const val = parseInt(document.getElementById("totalPlayers").value);
-  if(val < 2) return alert("Minimum 2 players required!");
-  totalPlayers = val;
-  db.ref("totalPlayers").set(totalPlayers).then(()=>{ updateAvailableNumbers(); alert(`Total players set to ${totalPlayers}. Cards = ${totalPlayers-1}`); });
+  const v = parseInt(totalPlayers.value);
+  if(v < 2) return alert("Min 2 players!");
+  db.ref("totalPlayers").set(v);
 };
 
-// Admin manual assign
-document.getElementById("assignBtn").onclick=()=>{
-  const name = document.getElementById("manualName").value.trim();
-  const num = parseInt(document.getElementById("manualNumber").value);
-  if(!name || !num) return alert("Name and Number required!");
-  if(num<2 || num>totalPlayers) return alert(`Number must be between 2 and ${totalPlayers}`);
+document.getElementById("assignBtn").onclick = () => {
+  const name = manualName.value.trim();
+  const num = parseInt(manualNumber.value);
 
-  assigned = assigned.filter(a=>a.name!==name);
-  assigned.push({name:name, number:num, adminAssigned:true});
+  if(!name || !num) return alert("Name & number required!");
+  if(num < 2 || num > totalPlayers) return alert("Invalid number!");
+
+  if(assigned.find(a => a.name === name))
+    return alert("This player already has a number!");
+
+  if(assigned.find(a => a.number === num))
+    return alert("This number already assigned!");
+
+  assigned.push({ name, number:num, adminAssigned:true });
   db.ref("assigned").set(assigned);
-  displayResults();
-  alert(`Number ${num} assigned to ${name}`);
 };
 
-// Reset button
-document.getElementById("resetBtn").onclick=()=>{
-  if(confirm("Are you sure you want to reset all?")){
+document.getElementById("resetBtn").onclick = () => {
+  if(confirm("Reset all?")){
     db.ref("assigned").set([]);
     db.ref("totalPlayers").set(10);
     location.reload();
   }
 };
 
-// Export PNG
-document.getElementById("exportBtn").onclick=()=>{
-  html2canvas(results).then(canvas=>{
-    const link = document.createElement("a");
-    link.download = 'assigned_numbers.png';
-    link.href = canvas.toDataURL();
-    link.click();
+document.getElementById("exportBtn").onclick = () => {
+  html2canvas(results).then(c => {
+    const a = document.createElement("a");
+    a.download = "assigned_numbers.png";
+    a.href = c.toDataURL();
+    a.click();
   });
 };
 </script>
+
 </body>
 </html>
-
