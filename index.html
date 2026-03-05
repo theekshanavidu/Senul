@@ -1,283 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="https://img.freepik.com/free-photo/billie-dollar-money-background_1150-744.jpg">
-<title>Senul Seettu Random Number</title>
-
-<style>
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  padding: 20px;
-  background: url('https://cdn.shopify.com/s/files/1/1279/9999/files/CasinoSupply-319669-roulette-table-players-image-a1.jpg?v=1724267235') no-repeat center center fixed;
-  background-size: cover;
-  position: relative;
-}
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.7);
-  z-index: 0;
-}
-* { position: relative; z-index: 1; }
-h1 { color:#333; }
-
-.card-container {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  max-width:700px;
-  margin-top:20px;
-}
-
-.card {
-  width:100px;
-  height:140px;
-  background:#fff;
-  border-radius:10px;
-  margin:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  cursor:pointer;
-  transition: transform 0.5s, background 0.5s;
-  box-shadow:0 4px 8px rgba(0,0,0,0.2);
-}
-
-.flipped {
-  background:#4CAF50;
-  color:white;
-}
-
-.admin-panel {
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  background:#f9f9f9;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 4px 8px rgba(0,0,0,0.2);
-  margin-top:20px;
-}
-
-input {
-  padding:10px;
-  border:none;
-  border-radius:5px;
-  margin:5px;
-  width:200px;
-}
-
-button {
-  padding:10px 20px;
-  border:none;
-  border-radius:5px;
-  margin:5px;
-  background: linear-gradient(90deg,#4CAF50 50%, #2e7d32 50%);
-  background-size:200% 100%;
-  color:white;
-  cursor:pointer;
-  transition: all 0.4s ease;
-  font-weight:bold;
-}
-
-button:hover {
-  background-position: right center;
-}
-
-#footer { margin-top:30px; color:gray; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senul Seettu Premium</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
 </head>
 
 <body>
+    <div id="app">
+        <!-- App Header (Hidden on Login) -->
+        <header id="app-header" class="hidden">
+            <div class="header-container">
+                <h1 class="logo">Senul <span>Seettu</span></h1>
+                <div class="user-info">
+                    <span id="header-username" style="cursor: pointer; text-decoration: underline;"
+                        title="View Profile"></span>
+                    <button id="btn-logout" class="btn-outline">Logout</button>
+                </div>
+            </div>
+        </header>
 
-<h1>🎰 Senul Seettu Random Number 🎯</h1>
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Login View -->
+            <div id="view-login" class="view active">
+                <div class="login-container glass-panel">
+                    <div class="login-header">
+                        <h2>Welcome to <br><span>Senul Seettu</span></h2>
+                        <p>Premium Number Selection</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" required
+                                autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn-primary" id="btn-login">Login to Play</button>
+                        <p style="margin-top: 15px; text-align: center;">Don't have an account? <a href="#register"
+                                style="color: var(--gold); text-decoration: none;">Register</a></p>
+                    </form>
+                </div>
+            </div>
 
-<div id="name-section">
-  <input type="text" id="username" placeholder="Enter Your Full Name">
-  <button id="startBtn">Start</button>
-</div>
+            <!-- Register View -->
+            <div id="view-register" class="view hidden">
+                <div class="login-container glass-panel">
+                    <div class="login-header">
+                        <h2>Create <br><span>Account</span></h2>
+                        <p>Join Senul Seettu</p>
+                    </div>
+                    <form id="register-form">
+                        <div class="input-group">
+                            <label for="reg-firstname">First Name</label>
+                            <input type="text" id="reg-firstname" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-lastname">Last Name</label>
+                            <input type="text" id="reg-lastname" placeholder="Enter your last name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-mobile">Mobile Number</label>
+                            <input type="tel" id="reg-mobile" placeholder="Enter your mobile number" required
+                                pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number">
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-username">Username</label>
+                            <input type="text" id="reg-username" placeholder="Choose a username" required
+                                autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-password">Password</label>
+                            <input type="password" id="reg-password" placeholder="Create a password" required
+                                minlength="6">
+                        </div>
+                        <button type="submit" class="btn-primary" id="btn-register">Register</button>
+                        <p style="margin-top: 15px; text-align: center;">Already have an account? <a href="#login"
+                                style="color: var(--gold); text-decoration: none;">Login</a></p>
+                    </form>
+                </div>
+            </div>
 
-<div class="card-container" id="cards" style="display:none;"></div>
+            <!-- Dashboard View (Cards) -->
+            <div id="view-dashboard" class="view hidden">
+                <div class="dashboard-container">
+                    <div id="dashboard-status" class="status-panel glass-panel">
+                        <h2>Select Your Number</h2>
+                        <p>Pick a card below to reveal your assigned number. Once selected, it cannot be changed.</p>
+                    </div>
 
-<div id="login-section">
-  <input type="password" id="adminPass" placeholder="Admin Password">
-  <button id="loginBtn">Admin Login</button>
-</div>
+                    <div id="assigned-result" class="assigned-panel glass-panel hidden">
+                        <h2 id="welcome-message">Your Assigned Number</h2>
+                        <div class="big-number" id="user-big-number">--</div>
+                    </div>
 
-<div class="admin-panel" id="adminPanel">
-  <h2>🧑‍💼 Admin Panel</h2>
+                    <div id="cards-grid" class="cards-grid">
+                        <!-- Cards will be injected here via JS -->
+                    </div>
+                </div>
+            </div>
 
-  <label>Total Players:
-    <input type="number" id="totalPlayers" min="2" value="10">
-  </label>
-  <button id="setPlayersBtn">Set Players</button>
+            <!-- Admin View -->
+            <div id="view-admin" class="view hidden">
+                <div class="admin-container">
+                    <div class="admin-header glass-panel">
+                        <h2>Admin Dashboard</h2>
+                        <div class="admin-actions">
+                            <button id="btn-export" class="btn-secondary">Export Results (PNG)</button>
+                            <button id="btn-reset-all" class="btn-danger">Global Reset</button>
+                        </div>
+                    </div>
 
-  <h3>Assign Number Manually</h3>
-  <input type="text" id="manualName" placeholder="Player Name">
-  <input type="number" id="manualNumber" placeholder="Number">
-  <button id="assignBtn">Assign</button>
+                    <div class="admin-grid">
+                        <!-- Controls Panel -->
+                        <div class="admin-panel glass-panel">
+                            <h3>Game Controls</h3>
+                            <form id="form-total-players">
+                                <div class="input-group inline">
+                                    <label for="total-players">Total Players:</label>
+                                    <input type="number" id="total-players" min="2" value="10" required>
+                                    <button type="submit" class="btn-primary btn-small">Set</button>
+                                </div>
+                            </form>
+                            <hr class="gold-hr">
+                            <h3>Manual Override</h3>
+                            <form id="form-override">
+                                <div class="input-group">
+                                    <label for="override-username">Username</label>
+                                    <input type="text" id="override-username" placeholder="Exact username" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="override-number">Assign Number</label>
+                                    <input type="number" id="override-number" min="2" placeholder="Start from 2"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn-warning btn-small">Force Assign</button>
+                            </form>
+                            <hr class="gold-hr">
+                            <h3>Reset User Password</h3>
+                            <form id="form-reset-password">
+                                <div class="input-group">
+                                    <label for="reset-mobile">User Mobile Number</label>
+                                    <input type="tel" id="reset-mobile" placeholder="Exact Mobile Number" required
+                                        pattern="[0-9]{10}">
+                                </div>
+                                <div class="input-group">
+                                    <label for="reset-new-password">New Password</label>
+                                    <input type="password" id="reset-new-password" placeholder="At least 6 characters"
+                                        required minlength="6">
+                                </div>
+                                <button type="submit" class="btn-danger btn-small">Reset Password</button>
+                            </form>
+                        </div>
 
-  <h3>Assigned Numbers</h3>
-  <div id="results"></div>
+                        <!-- Live Results Panel -->
+                        <div class="admin-panel glass-panel" id="results-panel">
+                            <h3>Live Results Table</h3>
+                            <div class="table-container" id="results-export-area">
+                                <table id="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Assigned Number</th>
+                                            <th>Mobile</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="results-tbody">
+                                        <!-- Rows injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-  <button id="resetBtn">🔄 Reset All</button>
-  <button id="exportBtn">📥 Export as PNG</button>
-</div>
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <span class="close-modal">&times;</span>
+                <h2>User Profile</h2>
+                <div class="profile-details">
+                    <p><strong>Name:</strong> <span id="prof-name"></span></p>
+                    <p><strong>Username:</strong> <span id="prof-username"></span></p>
+                    <p><strong>Mobile:</strong> <span id="prof-mobile"></span></p>
+                    <p><strong>Assigned Number:</strong> <span id="prof-number"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="footer">© Theekshana Viduranga</div>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<audio id="cardClickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3"></audio>
-<audio id="numberRevealSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-notification-2018.mp3"></audio>
-
-<script>
-// Firebase config
-firebase.initializeApp({
-  apiKey: "AIzaSyACPs6N80C3i8SS3aG7ahybThWvsPSf19o",
-  authDomain: "senul-80301.firebaseapp.com",
-  databaseURL: "https://senul-80301-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "senul-80301",
-  storageBucket: "senul-80301.appspot.com",
-  messagingSenderId: "718343352275",
-  appId: "1:718343352275:web:7c0e22dd69981690df8926"
-});
-
-const db = firebase.database();
-
-let totalPlayers = 10;
-let assigned = [];
-let availableNumbers = [];
-
-const cardsContainer = document.getElementById("cards");
-const results = document.getElementById("results");
-
-db.ref("totalPlayers").on("value", s => {
-  if (s.val()) totalPlayers = s.val();
-});
-
-db.ref("assigned").on("value", s => {
-  assigned = s.val() || [];
-  updateAvailableNumbers();
-  displayResults();
-});
-
-function updateAvailableNumbers(){
-  availableNumbers = [];
-  for(let i=2;i<=totalPlayers;i++){
-    if(!assigned.find(a => a.number === i)){
-      availableNumbers.push(i);
-    }
-  }
-}
-
-function displayResults(){
-  results.innerHTML = assigned.length
-    ? assigned.map(a => `<p>${a.name} → ${a.number}</p>`).join("")
-    : "<p>No numbers assigned</p>";
-}
-
-function generateCards(username){
-  cardsContainer.innerHTML = "";
-  for(let i=0;i<totalPlayers-1;i++){
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerText = "❓";
-
-    card.onclick = () => {
-
-      if(assigned.find(a => a.name === username)){
-        return alert("You already received a number!");
-      }
-
-      if(availableNumbers.length === 0){
-        return alert("No numbers available!");
-      }
-
-      document.getElementById("cardClickSound").play();
-
-      const num = availableNumbers[Math.floor(Math.random()*availableNumbers.length)];
-      assigned.push({ name: username, number: num, adminAssigned:false });
-      db.ref("assigned").set(assigned);
-
-      card.classList.add("flipped");
-      card.innerText = num;
-      document.getElementById("numberRevealSound").play();
-
-      alert(`${username} got number ${num}`);
-    };
-
-    cardsContainer.appendChild(card);
-  }
-}
-
-document.getElementById("startBtn").onclick = () => {
-  const name = username.value.trim();
-  if(!name) return alert("Enter your name!");
-  document.getElementById("name-section").style.display="none";
-  cardsContainer.style.display="flex";
-  generateCards(name);
-};
-
-document.getElementById("loginBtn").onclick = () => {
-  if(adminPass.value === "pacaya123"){
-    document.getElementById("login-section").style.display="none";
-    adminPanel.style.display="flex";
-  } else alert("Wrong password!");
-};
-
-document.getElementById("setPlayersBtn").onclick = () => {
-  const v = parseInt(totalPlayers.value);
-  if(v < 2) return alert("Min 2 players!");
-  db.ref("totalPlayers").set(v);
-};
-
-document.getElementById("assignBtn").onclick = () => {
-  const name = manualName.value.trim();
-  const num = parseInt(manualNumber.value);
-
-  if(!name || !num) return alert("Name & number required!");
-  if(num < 2 || num > totalPlayers) return alert("Invalid number!");
-
-  if(assigned.find(a => a.name === name))
-    return alert("This player already has a number!");
-
-  if(assigned.find(a => a.number === num))
-    return alert("This number already assigned!");
-
-  assigned.push({ name, number:num, adminAssigned:true });
-  db.ref("assigned").set(assigned);
-};
-
-document.getElementById("resetBtn").onclick = () => {
-  if(confirm("Reset all?")){
-    db.ref("assigned").set([]);
-    db.ref("totalPlayers").set(10);
-    location.reload();
-  }
-};
-
-document.getElementById("exportBtn").onclick = () => {
-  html2canvas(results).then(c => {
-    const a = document.createElement("a");
-    a.download = "assigned_numbers.png";
-    a.href = c.toDataURL();
-    a.click();
-  });
-};
-</script>
-
+    <!-- Scripts -->
+    <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>

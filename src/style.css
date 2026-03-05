@@ -1,0 +1,470 @@
+:root {
+    --bg-dark: #0f0f0f;
+    --gold: #d4af37;
+    --gold-light: #f3e5ab;
+    --gold-dark: #aa8c2c;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --text-main: #ffffff;
+    --text-muted: #aaaaaa;
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, rgba(15, 15, 15, 1) 70%);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.view {
+    min-height: 100vh;
+    width: 100%;
+    padding: 2rem;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.glass-panel {
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Header */
+header {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: rgba(15, 15, 15, 0.9);
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--gold);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0.8rem 1.5rem;
+}
+
+.btn-primary {
+    background-color: var(--gold);
+    color: var(--bg-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+}
+
+.btn-outline:hover {
+    background: var(--gold);
+    color: var(--bg-dark);
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+}
+
+.btn-danger {
+    background-color: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.btn-danger:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Login View */
+#view-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    padding: 3rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-header span {
+    color: var(--gold);
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.input-group input {
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-family: var(--font-main);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+#login-form button {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Dashboard View */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.status-panel {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.status-panel h2 {
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.assigned-panel {
+    padding: 3rem;
+    margin-bottom: 2rem;
+    border: 2px solid var(--gold);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.assigned-panel .big-number {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    margin-top: 1rem;
+}
+
+/* Cards Grid */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* 3D Flip Card */
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    aspect-ratio: 3/4;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    border: 2px solid var(--gold-dark);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.flip-card-front {
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    color: var(--gold);
+}
+
+.flip-card-front::after {
+    content: "❓";
+    font-size: 3rem;
+}
+
+/* The front face according to requirements "back of the card should show ❓... front shows assigned number". 
+In standard 3D transform terminology, 'front' is what you see first, 'back' is what's revealed. Let's adjust classes.*/
+
+.flip-card-face-unrevealed {
+    background: linear-gradient(135deg, #2a2a2a 0%, #111 100%);
+    color: var(--gold);
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.05) 10px, rgba(212, 175, 55, 0.05) 20px);
+}
+
+.flip-card-face-unrevealed::after {
+    content: "❓";
+    font-size: 3rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.flip-card-face-revealed {
+    background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
+    color: var(--bg-dark);
+    transform: rotateY(180deg);
+    font-weight: 800;
+    font-size: 3.5rem;
+}
+
+.flip-card:hover .flip-card-inner:not(.flipped) {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Admin View */
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.admin-header h2 {
+    color: var(--gold);
+}
+
+.admin-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-panel {
+    padding: 2rem;
+}
+
+.admin-panel h3 {
+    margin-bottom: 1.5rem;
+    color: var(--gold-light);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.inline {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.inline label {
+    flex: 1;
+}
+
+.inline input {
+    flex: 2;
+}
+
+.gold-hr {
+    border: none;
+    height: 1px;
+    background: rgba(212, 175, 55, 0.3);
+    margin: 2rem 0;
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+    background: rgba(15, 15, 15, 0.8);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+th {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+tr:hover td {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.close-modal {
+    color: var(--gold);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-modal:hover {
+    color: white;
+}
+
+.profile-details p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
