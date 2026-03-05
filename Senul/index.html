@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senul Seettu Premium</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- App Header (Hidden on Login) -->
+        <header id="app-header" class="hidden">
+            <div class="header-container">
+                <h1 class="logo">Senul <span>Seettu</span></h1>
+                <div class="user-info">
+                    <span id="header-username" style="cursor: pointer; text-decoration: underline;"
+                        title="View Profile"></span>
+                    <button id="btn-logout" class="btn-outline">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Login View -->
+            <div id="view-login" class="view active">
+                <div class="login-container glass-panel">
+                    <div class="login-header">
+                        <h2>Welcome to <br><span>Senul Seettu</span></h2>
+                        <p>Premium Number Selection</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" required
+                                autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn-primary" id="btn-login">Login to Play</button>
+                        <p style="margin-top: 15px; text-align: center;">Don't have an account? <a href="#register"
+                                style="color: var(--gold); text-decoration: none;">Register</a></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Register View -->
+            <div id="view-register" class="view hidden">
+                <div class="login-container glass-panel">
+                    <div class="login-header">
+                        <h2>Create <br><span>Account</span></h2>
+                        <p>Join Senul Seettu</p>
+                    </div>
+                    <form id="register-form">
+                        <div class="input-group">
+                            <label for="reg-firstname">First Name</label>
+                            <input type="text" id="reg-firstname" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-lastname">Last Name</label>
+                            <input type="text" id="reg-lastname" placeholder="Enter your last name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-mobile">Mobile Number</label>
+                            <input type="tel" id="reg-mobile" placeholder="Enter your mobile number" required
+                                pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number">
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-username">Username</label>
+                            <input type="text" id="reg-username" placeholder="Choose a username" required
+                                autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-password">Password</label>
+                            <input type="password" id="reg-password" placeholder="Create a password" required
+                                minlength="6">
+                        </div>
+                        <button type="submit" class="btn-primary" id="btn-register">Register</button>
+                        <p style="margin-top: 15px; text-align: center;">Already have an account? <a href="#login"
+                                style="color: var(--gold); text-decoration: none;">Login</a></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dashboard View (Cards) -->
+            <div id="view-dashboard" class="view hidden">
+                <div class="dashboard-container">
+                    <div id="dashboard-status" class="status-panel glass-panel">
+                        <h2>Select Your Number</h2>
+                        <p>Pick a card below to reveal your assigned number. Once selected, it cannot be changed.</p>
+                    </div>
+
+                    <div id="assigned-result" class="assigned-panel glass-panel hidden">
+                        <h2 id="welcome-message">Your Assigned Number</h2>
+                        <div class="big-number" id="user-big-number">--</div>
+                    </div>
+
+                    <div id="cards-grid" class="cards-grid">
+                        <!-- Cards will be injected here via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin View -->
+            <div id="view-admin" class="view hidden">
+                <div class="admin-container">
+                    <div class="admin-header glass-panel">
+                        <h2>Admin Dashboard</h2>
+                        <div class="admin-actions">
+                            <button id="btn-export" class="btn-secondary">Export Results (PNG)</button>
+                            <button id="btn-reset-all" class="btn-danger">Global Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-grid">
+                        <!-- Controls Panel -->
+                        <div class="admin-panel glass-panel">
+                            <h3>Game Controls</h3>
+                            <form id="form-total-players">
+                                <div class="input-group inline">
+                                    <label for="total-players">Total Players:</label>
+                                    <input type="number" id="total-players" min="2" value="10" required>
+                                    <button type="submit" class="btn-primary btn-small">Set</button>
+                                </div>
+                            </form>
+                            <hr class="gold-hr">
+                            <h3>Manual Override</h3>
+                            <form id="form-override">
+                                <div class="input-group">
+                                    <label for="override-username">Username</label>
+                                    <input type="text" id="override-username" placeholder="Exact username" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="override-number">Assign Number</label>
+                                    <input type="number" id="override-number" min="2" placeholder="Start from 2"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn-warning btn-small">Force Assign</button>
+                            </form>
+                            <hr class="gold-hr">
+                            <h3>Reset User Password</h3>
+                            <form id="form-reset-password">
+                                <div class="input-group">
+                                    <label for="reset-mobile">User Mobile Number</label>
+                                    <input type="tel" id="reset-mobile" placeholder="Exact Mobile Number" required
+                                        pattern="[0-9]{10}">
+                                </div>
+                                <div class="input-group">
+                                    <label for="reset-new-password">New Password</label>
+                                    <input type="password" id="reset-new-password" placeholder="At least 6 characters"
+                                        required minlength="6">
+                                </div>
+                                <button type="submit" class="btn-danger btn-small">Reset Password</button>
+                            </form>
+                        </div>
+
+                        <!-- Live Results Panel -->
+                        <div class="admin-panel glass-panel" id="results-panel">
+                            <h3>Live Results Table</h3>
+                            <div class="table-container" id="results-export-area">
+                                <table id="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Assigned Number</th>
+                                            <th>Mobile</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="results-tbody">
+                                        <!-- Rows injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <span class="close-modal">&times;</span>
+                <h2>User Profile</h2>
+                <div class="profile-details">
+                    <p><strong>Name:</strong> <span id="prof-name"></span></p>
+                    <p><strong>Username:</strong> <span id="prof-username"></span></p>
+                    <p><strong>Mobile:</strong> <span id="prof-mobile"></span></p>
+                    <p><strong>Assigned Number:</strong> <span id="prof-number"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
